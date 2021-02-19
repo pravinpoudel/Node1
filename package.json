@@ -1,0 +1,14 @@
+{
+  "name": "express1",
+  "version": "1.0.0",
+  "description": "this is a study project to et introduced with express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pravin Poudel",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
