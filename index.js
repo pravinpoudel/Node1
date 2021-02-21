@@ -1,6 +1,12 @@
 "use strict";
 const express = require("express");
 const path = require("path");
+const http = require("http");
+const cors = require("cors");
+
+const { response } = require("express");
+
+const {sup, sup2} = require("./middle");
 
 // here we create an object called app that is gonna be our webserver
 const app = express();
@@ -8,14 +14,22 @@ const router = express.Router();
 
 let port = process.env.port || 3000;
 
+app.use(cors());
+
+// for all request
+app.use(sup);
+
 app.use(router);
 
-// ---------------------------------------------------------------------------
 
-router.get("/", (req, res)=>{
+// ---------------------------------------------------------------------------
+// adding middleware after the route will call this middleware to this specific condition in a order they appear and 
+// then the request handler is called at last
+
+router.get("/", sup, sup2, (req, res)=>{
 
     console.log(req.url);
-
+    console.log("root url is called");
     // sendfile demand absolute path so for that we have option with root
     res.sendFile('index.html', {root: path.join( __dirname, '/public/')});
     //note that we are not providing absolute path by our own or with __dirname concatinated with public 
