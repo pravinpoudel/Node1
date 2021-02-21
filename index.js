@@ -14,19 +14,41 @@ const router = express.Router();
 
 let port = process.env.port || 3000;
 
-app.use(cors());
+let acceptedOrigin = ["http://www.example.com", "http://www.example2.com",]
+
+let corsOption = { origin: function corsCheck(origin, callback){
+
+    console.log("cross origin is checked");
+
+    let originState;
+    
+    if( acceptedOrigin.indexOf(origin) !== -1 ){
+
+        originState = {origin: true}
+    }
+
+    else{
+
+        originState ={origin: false}
+        console.log("failed");
+    }
+
+    callback( new Error("i failed"), originState);
+}
+}
+
 
 // for all request
-app.use(sup);
+// app.use(sup);
 
 app.use(router);
-
 
 // ---------------------------------------------------------------------------
 // adding middleware after the route will call this middleware to this specific condition in a order they appear and 
 // then the request handler is called at last
 
-router.get("/", sup, sup2, (req, res)=>{
+
+router.get("/", sup, sup2, cors(corsOption), (req, res)=>{
 
     console.log(req.url);
     console.log("root url is called");
