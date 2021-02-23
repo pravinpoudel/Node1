@@ -3,14 +3,19 @@ const express = require("express");
 const path = require("path");
 const http = require("http");
 const cors = require("cors");
-
 const { response } = require("express");
-
-const {sup, sup2} = require("./middle");
 
 // here we create an object called app that is gonna be our webserver
 const app = express();
 const router = express.Router();
+
+const thing = require("./routes/things");
+
+// anything that begins with things should go to things file
+app.use('/things', thing);
+// handle endpoints that start with things with things
+
+const {sup, sup2} = require("./middle");
 
 let port = process.env.port || 3000;
 
