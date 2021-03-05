@@ -1,7 +1,8 @@
 'use strict';
 const express = require("express");
-
+const bcrypt = require("bcrypt");
 const router = express.Router();
+let saltRound = 13;
 
 
 const authMiddleware = (req, res, next)=>{
@@ -22,12 +23,20 @@ router.post("/item", async(req, res, next)=> {
     try{
         console.log("i am herer")
         console.log(req.body.data);
-        await res.send(req.body.data);
+        let user = {
+            _id: Date.now(),
+            name: req.body.data.name,
+            email:req.body.data.email,
+            password: await bcrypt.hash(req.body.data.password, saltRound),
+            age:req.body.data.age,
+            role:req.body.data.role
+        }
+
+        await res.status(201).send(user);
     }
     catch(err){
         console.log(`${err} error happened`)
     }
-
 }
 );
 
