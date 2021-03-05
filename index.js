@@ -3,42 +3,51 @@ const express = require("express");
 const path = require("path");
 const http = require("http");
 const cors = require("cors");
-const { response } = require("express");
+const thing = require("./routes/things");
+
+// const { response } = require("express");
+
 
 // here we create an object called app that is gonna be our webserver
 const app = express();
-const router = express.Router();
+app.use(express.json());
 
-const thing = require("./routes/things");
+const router = express.Router();
 
 // anything that begins with things should go to things file
 app.use('/things', thing);
 // handle endpoints that start with things with things
 
+
+// load view engine
+app.set('views', path.join(__dirname, "views"));
+app.set("view engine", "pug");
+
+
 const {sup, sup2} = require("./middle");
 
 let port = process.env.port || 3000;
 
-let acceptedOrigin = ["http://www.example.com", "http://www.example2.com",]
+let acceptedOrigin = ["http://www.example1.com", "http://www.example2.com",]
 
 let corsOption = { origin: function corsCheck(origin, callback){
 
-    console.log("cross origin is checked");
 
-    let originState;
-    
-    if( acceptedOrigin.indexOf(origin) !== -1 ){
+    let originState, error;
+
+    if( acceptedOrigin.indexOf(origin) !== -1 || !origin){
 
         originState = {origin: true}
+        error = null;
     }
 
     else{
 
         originState ={origin: false}
-        console.log("failed");
+        error = new Error("this origin isnot allowded")
     }
 
-    callback( new Error("i failed"), originState);
+    callback( error, originState);
 }
 }
 
@@ -53,8 +62,10 @@ app.use(router);
 // then the request handler is called at last
 
 
-router.get("/", sup, sup2, cors(corsOption), (req, res)=>{
+router.get("/",  cors(corsOption), sup, sup2, (req, res)=>{
 
+    res.render('index');
+    end();
     console.log(req.url);
     console.log("root url is called");
     // sendfile demand absolute path so for that we have option with root

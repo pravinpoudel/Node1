@@ -3,6 +3,7 @@ const express = require("express");
 
 const router = express.Router();
 
+
 const authMiddleware = (req, res, next)=>{
     console.log("authenticiation is called");
     next();
@@ -14,6 +15,21 @@ router.get("/", (req, resp)=>{
 
     console.log("i am inside root of this router-thing");
 });
+
+
+
+router.post("/item", async(req, res, next)=> {
+    try{
+        console.log("i am herer")
+        console.log(req.body.data);
+        await res.send(req.body.data);
+    }
+    catch(err){
+        console.log(`${err} error happened`)
+    }
+
+}
+);
 
 router.route("/mouse")
     .get((req, res)=>{
