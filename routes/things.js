@@ -18,8 +18,7 @@ router.get("/", (req, resp)=>{
 });
 
 
-
-router.post("/item", async(req, res, next)=> {
+router.post("/register", async(req, res, next)=> {
     try{
         console.log("i am herer")
         console.log(req.body.data);
@@ -39,6 +38,48 @@ router.post("/item", async(req, res, next)=> {
     }
 }
 );
+
+
+router.post("/login", async(req, res, next)=>{
+    
+    try{
+        //check if that email exist otherwise there is no point of hashing submitted password
+        let userMatched = true;
+        if(userMatched){
+    
+            let submittedPassword = req.body.data.password; 
+            let savedPassword = await bcrypt.hash('Pulchowk@123', saltRound);
+            let passwordMatched = bcrypt.compare(submittedPassword, savedPassword);
+    
+            if(passwordMatched){
+    
+                console.log(" party !! do login");
+                res.status(200).send({status:200, message:"guest is our user"}) 
+            }
+    
+            else{
+                console.log("sorry we dont recognize you");
+                res.status(401).send({status: 401, error: "Password didn't matched" });
+            }
+    
+        }
+        //if that email doesnot match we don't send response within the spot rather we consume
+        //same amount time it take for if email matches
+        else {
+    
+            // fake pass
+            let fakeHashedPassword = `$2B$${saltRound}passwordisaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`;
+            bcrypt.compare(submittedPassword, fakeHashedPassword);
+            res.status(401).send({status:401, error:"your credential doesnot match with ours"});
+        }
+            
+    }
+    catch(err){
+        console.log(`${err} is catched`);
+    }
+});
+
+
 
 router.route("/mouse")
     .get((req, res)=>{

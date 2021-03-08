@@ -8,19 +8,25 @@ var http = require("http");
 
 var cors = require("cors");
 
-var thing = require("./routes/things"); // const { response } = require("express");
-// here we create an object called app that is gonna be our webserver
+var thing = require("./routes/things");
+
+var apiRoute = require("./routes/apiRoute"); // const { response } = require("express");
 
 
-var app = express();
+var app = express(); // here we create an object called app that is gonna be our webserver
+
+require("dotenv").config();
+
 app.use(express.json());
 var router = express.Router(); // anything that begins with things should go to things file
 
 app.use('/things', thing); // handle endpoints that start with things with things
-// load view engine
+
+app.use("/api", apiRoute); // load view engine
 
 app.set('views', path.join(__dirname, "views"));
 app.set("view engine", "pug");
+console.log(process.env);
 
 var _require = require("./middle"),
     sup = _require.sup,
