@@ -10,15 +10,32 @@ var cors = require("cors");
 
 var thing = require("./routes/things");
 
-var apiRoute = require("./routes/apiRoute"); // const { response } = require("express");
+var apiRoute = require("./routes/apiRoute");
 
+var mongoose = require("mongoose");
 
-var app = express(); // here we create an object called app that is gonna be our webserver
+var router = express.Router();
+
+var _require = require("./middle"),
+    sup = _require.sup,
+    sup2 = _require.sup2;
+
+var port = process.env.port || 4000;
 
 require("dotenv").config();
 
-app.use(express.json());
-var router = express.Router(); // anything that begins with things should go to things file
+var app = express();
+console.log(process.env.DB_CONNECT);
+mongoose.connect(process.env.DB_CONNECT, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(function () {
+  console.log("sucessfully connected");
+})["catch"](function (err) {
+  console.log("".concat(err, " error is in the program"));
+});
+app.use(cors());
+app.use(express.json()); // anything that begins with things should go to things file
 
 app.use('/things', thing); // handle endpoints that start with things with things
 
@@ -26,14 +43,7 @@ app.use("/api", apiRoute); // load view engine
 
 app.set('views', path.join(__dirname, "views"));
 app.set("view engine", "pug");
-console.log(process.env);
-
-var _require = require("./middle"),
-    sup = _require.sup,
-    sup2 = _require.sup2;
-
-var port = process.env.port || 3000;
-var acceptedOrigin = ["http://www.example1.com", "http://www.example2.com"];
+var acceptedOrigin = ["http://www.example1.com", "http://www.example2.com", "http://localhost:3000"];
 var corsOption = {
   origin: function corsCheck(origin, callback) {
     var originState, error;

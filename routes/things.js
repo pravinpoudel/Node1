@@ -17,7 +17,11 @@ router.get("/", (req, resp)=>{
     console.log("i am inside root of this router-thing");
 });
 
+router.post("/user", (req, res, next)=> {
 
+    res.send(req.body.data);
+
+});
 router.post("/register", async(req, res, next)=> {
     try{
         console.log("i am herer")

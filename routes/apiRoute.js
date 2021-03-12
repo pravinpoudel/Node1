@@ -9,8 +9,6 @@ router.get("/", (req, res)=>{
 
 router.post("/register", (req, res, next)=>{
     console.log(req.url);
-    // add new user;
-
 })
 
 

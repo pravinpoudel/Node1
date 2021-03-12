@@ -14,7 +14,7 @@ router.get("/", function (req, res) {
   });
 });
 router.post("/register", function (req, res, next) {
-  console.log(req.url); // add new user;
+  console.log(req.url);
 });
 module.exports = router;
 //# sourceMappingURL=apiRoute.dev.js.map
