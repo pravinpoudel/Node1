@@ -14,18 +14,15 @@ var apiRoute = require("./routes/apiRoute");
 
 var mongoose = require("mongoose");
 
-var router = express.Router();
-
 var _require = require("./middle"),
     sup = _require.sup,
     sup2 = _require.sup2;
 
-var port = process.env.port || 4000;
-
 require("dotenv").config();
 
 var app = express();
-console.log(process.env.DB_CONNECT);
+var router = express.Router();
+var port = process.env.port || 4000;
 mongoose.connect(process.env.DB_CONNECT, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -35,12 +32,9 @@ mongoose.connect(process.env.DB_CONNECT, {
   console.log("".concat(err, " error is in the program"));
 });
 app.use(cors());
-app.use(express.json()); // anything that begins with things should go to things file
-
-app.use('/things', thing); // handle endpoints that start with things with things
-
-app.use("/api", apiRoute); // load view engine
-
+app.use(express.json());
+app.use('/things', thing);
+app.use("/api", apiRoute);
 app.set('views', path.join(__dirname, "views"));
 app.set("view engine", "pug");
 var acceptedOrigin = ["http://www.example1.com", "http://www.example2.com", "http://localhost:3000"];
@@ -62,13 +56,8 @@ var corsOption = {
 
     callback(error, originState);
   }
-}; // for all request
-// app.use(sup);
-
-app.use(router); // ---------------------------------------------------------------------------
-// adding middleware after the route will call this middleware to this specific condition in a order they appear and 
-// then the request handler is called at last
-
+};
+app.use(router);
 router.get("/", cors(corsOption), sup, sup2, function (req, res) {
   res.render('index');
   end();

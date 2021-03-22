@@ -1,4 +1,5 @@
 "use strict";
+
 const express = require("express");
 const path = require("path");
 const http = require("http");
@@ -6,14 +7,15 @@ const cors = require("cors");
 const thing = require("./routes/things");
 const apiRoute = require("./routes/apiRoute");
 const mongoose = require("mongoose");
-const router = express.Router();
 const {sup, sup2} = require("./middle");
-let port = process.env.port || 4000;
-
 require("dotenv").config();
 
 const app = express();
-console.log(process.env.DB_CONNECT)
+
+const router = express.Router();
+
+let port = process.env.port || 4000;
+
 mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true , useUnifiedTopology: true }).then(()=>{
   console.log("sucessfully connected");
 }).catch((err)=>{
@@ -21,24 +23,16 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true , useUnifiedTop
 });
 
 app.use(cors());
-
 app.use(express.json());
-// anything that begins with things should go to things file
-
 app.use('/things', thing);
-// handle endpoints that start with things with things
 app.use("/api", apiRoute);
 
-// load view engine
 app.set('views', path.join(__dirname, "views"));
 app.set("view engine", "pug");
-
-
 
 let acceptedOrigin = ["http://www.example1.com", "http://www.example2.com", "http://localhost:3000"]
 
 let corsOption = { origin: function corsCheck(origin, callback){
-
 
     let originState, error;
 
@@ -58,15 +52,7 @@ let corsOption = { origin: function corsCheck(origin, callback){
 }
 }
 
-
-// for all request
-// app.use(sup);
-
 app.use(router);
-
-// ---------------------------------------------------------------------------
-// adding middleware after the route will call this middleware to this specific condition in a order they appear and 
-// then the request handler is called at last
 
 
 router.get("/",  cors(corsOption), sup, sup2, (req, res)=>{

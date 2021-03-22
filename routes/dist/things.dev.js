@@ -16,9 +16,6 @@ router.use(authMiddleware);
 router.get("/", function (req, resp) {
   console.log("i am inside root of this router-thing");
 });
-router.post("/user", function (req, res, next) {
-  res.send(req.body.data);
-});
 router.post("/register", function _callee(req, res, next) {
   var user;
   return regeneratorRuntime.async(function _callee$(_context) {
