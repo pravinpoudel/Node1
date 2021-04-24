@@ -58,7 +58,6 @@ app.use(router);
 router.get("/",  cors(corsOption), sup, sup2, (req, res)=>{
 
     res.render('index');
-    end();
     console.log(req.url);
     console.log("root url is called");
     // sendfile demand absolute path so for that we have option with root

@@ -4,7 +4,8 @@
   "description": "this is a study project to et introduced with express",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "set PORT = 3000 && node index.js"
   },
   "author": "Pravin Poudel",
   "license": "MIT",
@@ -19,6 +20,7 @@
     "express-validator": "^6.10.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.19",
+    "nodemon": "^2.0.7",
     "pug": "^3.0.0"
   }
 }
