@@ -4,11 +4,13 @@ const express = require("express");
 const path = require("path");
 const http = require("http");
 const cors = require("cors");
+const jwt = require("jsonwebtoken")
 const thing = require("./routes/things");
 const apiRoute = require("./routes/apiRoute");
 const mongoose = require("mongoose");
 const {sup, sup2} = require("./middle");
 require("dotenv").config();
+const JWT_KEY = process.env.JWT_KEY;
 
 const app = express();
 

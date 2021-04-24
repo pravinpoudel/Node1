@@ -2,19 +2,15 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const router = express.Router();
+const {authenticiation:authMiddleware, tokenRegistration}  = require("../middlewares/authmiddleware")
 let saltRound = 13;
-
-
-const authMiddleware = (req, res, next)=>{
-    console.log("authenticiation is called");
-    next();
-}
 
 router.use(authMiddleware);
 
-router.get("/", (req, resp)=>{
+router.get("/", (req, res)=>{
 
     console.log("i am inside root of this router-thing");
+    res.send({code:0, message: "You are our user"})
 });
 
 router.post("/register", async(req, res, next)=> {
@@ -49,11 +45,15 @@ router.post("/login", async(req, res, next)=>{
             let submittedPassword = req.body.data.password; 
             let savedPassword = await bcrypt.hash('Pulchowk@123', saltRound);
             let passwordMatched = bcrypt.compare(submittedPassword, savedPassword);
-    
             if(passwordMatched){
-    
+                let limit = 60*60; // 1 hour
+                let payload = {
+                    _id: 123,
+                    exp: Math.floor(Date.now()/1000)+limit 
+                };
+                let token = tokenRegistration(payload);
                 console.log(" party !! do login");
-                res.status(200).send({status:200, message:"guest is our user"}) 
+                res.status(200).send({status:200, data: token, message:"guest is our user"}) 
             }
     
             else{

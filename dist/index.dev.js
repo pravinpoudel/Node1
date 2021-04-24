@@ -8,6 +8,8 @@ var http = require("http");
 
 var cors = require("cors");
 
+var jwt = require("jsonwebtoken");
+
 var thing = require("./routes/things");
 
 var apiRoute = require("./routes/apiRoute");
@@ -20,6 +22,7 @@ var _require = require("./middle"),
 
 require("dotenv").config();
 
+var JWT_KEY = process.env.JWT_KEY;
 var app = express();
 var router = express.Router();
 var port = process.env.port || 4000;

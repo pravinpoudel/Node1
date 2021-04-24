@@ -1,0 +1,1 @@
+{"version":3,"sources":["authmiddleware.js"],"names":["authenticiation","req","res","next"],"mappings":";;AAAA,IAAOA,eAAe,GAAG,SAAlBA,eAAkB,CAACC,GAAD,EAAMC,GAAN,EAAWC,IAAX,EAAkB,CAG1C,CAHD","sourcesContent":["const  authenticiation = (req, res, next)=>{\r\n        \r\n\r\n}"],"file":"authmiddleware.dev.js"}
